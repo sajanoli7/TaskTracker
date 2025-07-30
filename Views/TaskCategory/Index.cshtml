@@ -1,0 +1,41 @@
+﻿@model IEnumerable<TaskTracker.ViewModel.TaskCategoryViewModel>
+
+@{
+    ViewData["Title"] = "Task Categories";
+}
+
+<h1>Task Categories</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Category</a>
+</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center">No categories found.</div>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Category Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                        <form asp-action="Delete" method="post" asp-route-id="@item.Id" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

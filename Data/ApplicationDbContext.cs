@@ -40,7 +40,7 @@ namespace TaskTracker.Data
                 );
                 
             // Additional model configuration can go here
-
+     
             //builder.Entity<IdentityRole>().HasData(
             //    new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
             //    new IdentityRole { Name = "User", NormalizedName = "USER" }
