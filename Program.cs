@@ -1,9 +1,43 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using TaskTracker.Data;
+using TaskTracker.Models;
+using TaskTracker.Services.Implementation;
+using TaskTracker.Services.Interface;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddIdentity<UserInfo, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<ITaskCategoryService, TaskCategoryService>();
+ 
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+
+{
+
+    var services = scope.ServiceProvider;
+
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    var userManager = services.GetRequiredService<UserManager<UserInfo>>();
+
+    if (!await roleManager.RoleExistsAsync("Admin"))
+
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
+
+    if (!await roleManager.RoleExistsAsync("User"))
+
+        await roleManager.CreateAsync(new IdentityRole("User"));
+
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

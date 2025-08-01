@@ -8,5 +8,7 @@ namespace TaskTracker.Models
         public string LastName { get; set; }
         public DateTime Dob {  get; set; }
 
+        public ICollection<TaskItem> TaskItems { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }
